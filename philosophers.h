@@ -64,7 +64,8 @@ void		*start(void *data);
 void		*start2(void *data); //
 void		philo_sleep(struct timeval start, t_philo *philo);
 void		philo_think(struct timeval start, t_philo *philo);
-void		philo_eat(struct timeval start, t_philo *philo);
+void		even_philo_eat(struct timeval start, t_philo *philo);
+void		odd_philo_eat(struct timeval start, t_philo *philo);
 void		philo_die(struct timeval start, t_philo *philo);
 
 /* timer */

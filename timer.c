@@ -5,18 +5,22 @@ void	usleep_ms(unsigned int time)
 {
 	struct timeval	start;
 	struct timeval	end;
-	long int		milli_seconds;
+	double			start_microsecond;
+	double			end_microsecond;
+	double			total_microseconds;	
 
+	time = time * 1000;
 	gettimeofday(&start, NULL);
 	gettimeofday(&end, NULL);
-	milli_seconds = (((end.tv_sec - start.tv_sec) * 1000) \
-					+ (end.tv_usec - start.tv_usec) / 1000);
-	while (milli_seconds + 100 < time)
+	start_microsecond = (start.tv_sec * 1000000) + (start.tv_usec);
+	end_microsecond = (end.tv_sec * 1000000) + (end.tv_usec);
+	total_microseconds = end_microsecond - start_microsecond;
+	while (total_microseconds < time)
 	{
 		usleep(100);
 		gettimeofday(&end, NULL);
-		milli_seconds = (((end.tv_sec - start.tv_sec) * 1000) \
-					+ (end.tv_usec - start.tv_usec) / 1000);
+		end_microsecond = (end.tv_sec * 1000000) + (end.tv_usec);
+		total_microseconds = end_microsecond - start_microsecond;
 	}
 }
 
@@ -36,12 +40,15 @@ long long	current_timestamp(struct timeval start)
 void	time_check(struct timeval start, t_philo *philo)
 {
 	struct timeval	end;
-	long int		microseconds;
+	double			start_microsecond;
+	double			end_microsecond;
+	int				total_microseconds;	
 
 	gettimeofday(&end, NULL);
-	microseconds = (((end.tv_sec - start.tv_sec) * 1000) \
-					+ ((end.tv_usec - start.tv_usec) / 1000));
-	if (microseconds >= philo->time_to_die)
+	start_microsecond = (start.tv_sec * 1000000) + (start.tv_usec);
+	end_microsecond = (end.tv_sec * 1000000) + (end.tv_usec);
+	total_microseconds = (int)end_microsecond - (int)start_microsecond;
+	if (total_microseconds >= philo->time_to_die)
 	{
 		pthread_mutex_lock(&(philo->end_flag->mutex));
 		philo->end_flag->finish = 1;

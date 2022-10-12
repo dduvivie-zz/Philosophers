@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_structs.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dduvivie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/12 19:10:13 by dduvivie          #+#    #+#             */
+/*   Updated: 2022/10/12 19:10:19 by dduvivie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 /* Init the list of threads. */
@@ -18,6 +30,7 @@ int	init_endflag(t_args *args, t_endflag *end_flag)
 
 	i = 0;
 	end_flag->finish = 0;
+	end_flag->philo_num = args->num_of_philo;
 	end_flag->eat_counter = (int *)malloc(args->num_of_philo * sizeof(int));
 	if (!end_flag->eat_counter)
 		return (0);

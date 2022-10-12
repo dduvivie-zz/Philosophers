@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dduvivie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/12 19:11:52 by dduvivie          #+#    #+#             */
+/*   Updated: 2022/10/12 19:11:53 by dduvivie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
@@ -12,6 +24,7 @@
 typedef struct s_endflag{
 	int				finish;
 	int				*eat_counter;
+	int				philo_num;
 	pthread_mutex_t	mutex;
 }				t_endflag;
 
@@ -67,9 +80,11 @@ void		philo_think(struct timeval start, t_philo *philo);
 void		even_philo_eat(struct timeval start, t_philo *philo);
 void		odd_philo_eat(struct timeval start, t_philo *philo);
 void		philo_die(struct timeval start, t_philo *philo);
+int			check_end_flag(t_endflag *end_flag);
+
 
 /* timer */
-long long	current_timestamp(struct timeval start);
+long int	get_time(struct timeval start);
 void		usleep_ms(unsigned int time);
 void		time_check(struct timeval start, t_philo *philo);
 

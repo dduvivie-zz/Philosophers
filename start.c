@@ -1,30 +1,35 @@
 #include "philosophers.h"
 
-void	*philo_start(void *data)
+void	*start(void *data)
 {
-	t_philo		*philo;
+	t_philo			*philo;
+	struct timeval	start_time;
+	struct timeval	life_time;
 
 	philo = (t_philo *)data;
-	printf("left fork of %d is %d and right fork is %d.\n", philo->id, philo->left_fork->used, philo->right_fork->used);
+	gettimeofday(&start_time, NULL);
+	gettimeofday(&life_time, NULL);
+	while (philo->end_flag->finish == 0)
+	{
+		time_check(life_time, philo);
+		if (philo->end_flag->finish == 0)
+			philo_think(start_time, philo);
+		if (philo->end_flag->finish == 0)
+			time_check(life_time, philo);
+		if (philo->end_flag->finish == 0)
+			philo_eat(start_time, philo);
+		gettimeofday(&life_time, NULL);
+		if (philo->end_flag->finish == 0)
+			philo_sleep(start_time, philo);
+	}
+	return (NULL);
+}
 
-	// timer count start
+void	*start2(void *data)
+{
+	t_philo			*philo;
 
-	// try to take fork
-
-	// eat
-	//printf("Time to eat is: %ums.\n", philo->time_to_eat);
-	// reset timer
-
-	// put back fork
-
-	// sleep
-	//printf("Time to sleep is: %ums.\n", philo->time_to_sleep);
-
-	// think
-	//printf("Time to think is: %ums.\n", philo->time_to_think);
-
-
-	//printf("Num of times to eat is: %d.\n", philo->num_of_times_eat);
-	//philo_sleep(philo);
+	philo = (t_philo *)data;
+	printf("My ID is %d.\n", philo->id);
 	return (NULL);
 }

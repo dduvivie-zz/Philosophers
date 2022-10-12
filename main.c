@@ -1,54 +1,32 @@
 #include "philosophers.h"
 
-/*
-	//pthread_mutex_t	fork1;
-	//pthread_mutex_t	fork2;
-	//pthread_mutex_init(&fork1, NULL);
-	//pthread_mutex_init(&fork2, NULL);
-*/
-
 int	main(int argc, char *argv[])
 {
-	pthread_t		*thread_list;
-	t_fork			*fork_list;
-	t_philo			*philo_list;
-	t_args			args;
-	unsigned int	i;
+	t_program	prg;
+	int			i;
+	int			error;
 
-	/* check argument and get it in int */
-	get_args_in_int(argc - 1, argv, &args);
-	if (args.error_flag == 1)
+	if (!get_args_in_int(argc - 1, argv, &(prg.args)))
 		return (0);
-
-	/* init structure */
-	thread_list = init_threads(&args);
-	if (!thread_list)
+	if (!init_structs(&prg))
 		return (0);
-
-	fork_list = init_forks(&args); //---------->
-	if (!fork_list)
-	{
-		free(thread_list);
-		return (0);
-	}
-
-	philo_list = init_philos(&args, fork_list);
-	if (!philo_list)
-	{
-		free(thread_list);
-		free(fork_list);
-		return (0);
-	}
-
-	/* start threads */
 	i = -1;
-	while (++i < args.num_of_philo)
-		pthread_create(&(thread_list[i]), NULL, philo_start, &(philo_list[i]));
-	i = -1;
-	while (++i < args.num_of_philo)
-		pthread_join(thread_list[i], NULL);
-
-	//pthread_mutex_destroy(&fork1);
-	//pthread_mutex_destroy(&fork2);
+	error = 0;
+	while (++i < prg.args.num_of_philo && !error)
+	{
+		if (pthread_create(&(prg.threads[i]), NULL, start, &(prg.philos[i])))
+			error = 1;
+	}
+	if (!error)
+	{
+		i = -1;
+		while (++i < prg.args.num_of_philo && !error)
+		{
+			if (pthread_join(prg.threads[i], NULL))
+				error = 1;
+		}
+	}
+	free_all_memory(&prg);
+	system("leaks philosophers >> .leaks_log.txt");
 	return (0);
 }

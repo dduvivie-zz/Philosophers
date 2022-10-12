@@ -1,44 +1,52 @@
 #include "philosophers.h"
 
-/* Execute usleep() in millisecond */
-void	usleep_ms(unsigned int time)
-{
-	usleep(time * 1000);
-}
-
-/* Get the current time in millisecond */
-long long	current_timestamp(void)
-{
-	struct timeval	te;
-	long long		milliseconds;
-
-	gettimeofday(&te, NULL);
-	milliseconds = te.tv_sec * 1000LL + te.tv_usec / 1000;
-	return (milliseconds);
-}
-
-void	philo_sleep(t_philo *philo)
+void	philo_sleep(struct timeval start, t_philo *philo)
 {
 	long long	current_time;
 
-	current_time = current_timestamp();
-	printf("%lld %u is sleeping\n", current_time, philo->id);
+	current_time = current_timestamp(start);
+	printf("%10lld %u is sleeping\n", current_time, philo->id);
 	usleep_ms(philo->time_to_sleep);
 }
 
-void	philo_think(t_philo *philo)
+void	philo_think(struct timeval start, t_philo *philo)
 {
 	long long	current_time;
 
-	current_time = current_timestamp();
-	printf("%lld %u is thinking\n", current_time, philo->id);
-	usleep_ms(philo->time_to_think);
+	current_time = current_timestamp(start);
+	printf("%10lld %u is thinking\n", current_time, philo->id);
 }
 
-//void	philo_eat(t_philo *philo)
-//{
-//	/* need two fork to execute eat() */
-//	// get_right fork()
-//	// get_left_fork()
-//	// eat
-//}
+void	philo_eat(struct timeval start, t_philo *philo)
+{
+	if (philo->id % 2 == 1)
+	{
+		pthread_mutex_lock(&(philo->left_fork->mutex));
+		printf("%10lld %u has taken a left fork\n", current_timestamp(start), philo->id);
+		pthread_mutex_lock(&(philo->right_fork->mutex));
+		printf("%10lld %u has taken a right fork\n", current_timestamp(start), philo->id);
+		printf("%10lld %u is eating\n", current_timestamp(start), philo->id);
+		usleep_ms(philo->time_to_eat);
+		pthread_mutex_unlock(&(philo->left_fork->mutex));
+		pthread_mutex_unlock(&(philo->right_fork->mutex));
+	}
+	else
+	{
+		pthread_mutex_lock(&(philo->right_fork->mutex));
+		printf("%10lld %u has taken a right fork\n", current_timestamp(start), philo->id);
+		pthread_mutex_lock(&(philo->left_fork->mutex));
+		printf("%10lld %u has taken a left fork\n", current_timestamp(start), philo->id);
+		printf("%10lld %u is eating\n", current_timestamp(start), philo->id);
+		usleep_ms(philo->time_to_eat);
+		pthread_mutex_unlock(&(philo->right_fork->mutex));
+		pthread_mutex_unlock(&(philo->left_fork->mutex));
+	}
+}
+
+void	philo_die(struct timeval start, t_philo *philo)
+{
+	long long	current_time;
+
+	current_time = current_timestamp(start);
+	printf("%10lld %u died\n", current_time, philo->id);
+}

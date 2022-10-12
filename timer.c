@@ -5,19 +5,18 @@ void	usleep_ms(unsigned int time)
 {
 	struct timeval	start;
 	struct timeval	end;
-	long int		microseconds;
+	long int		milli_seconds;
 
-	time = time * 1000;
 	gettimeofday(&start, NULL);
 	gettimeofday(&end, NULL);
-	microseconds = (((end.tv_sec - start.tv_sec) * 1000000) \
-					+ (end.tv_usec - start.tv_usec));
-	while (microseconds + 20 < time)
+	milli_seconds = (((end.tv_sec - start.tv_sec) * 1000) \
+					+ (end.tv_usec - start.tv_usec) / 1000);
+	while (milli_seconds + 100 < time)
 	{
-		usleep(20);
+		usleep(100);
 		gettimeofday(&end, NULL);
-		microseconds = (((end.tv_sec - start.tv_sec) * 1000000) \
-					+ (end.tv_usec - start.tv_usec));
+		milli_seconds = (((end.tv_sec - start.tv_sec) * 1000) \
+					+ (end.tv_usec - start.tv_usec) / 1000);
 	}
 }
 

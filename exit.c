@@ -43,3 +43,16 @@ int	error_exit(t_program *prg, int num)
 	}
 	return (0);
 }
+
+void	free_all_memory(t_program *prg)
+{
+	int	num;
+
+	num = prg->args.num_of_philo;
+	free(prg->threads);
+	destroy_fork_mutex(prg->forks, num);
+	free(prg->forks);
+	free(prg->end_flag.eat_counter);
+	destroy_endflag_mutex(&(prg->end_flag));
+	free(prg->philos);
+}

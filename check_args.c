@@ -57,7 +57,7 @@ int	args_are_correct(int argc, char *argv[])
 	{
 		if (!arg_is_int(argv[i]))
 			return (0);
-		if (i == 1)
+		if (i == 1 || i == 5)
 		{
 			num = (int)str_to_num(argv[i]);
 			if (num < 1)

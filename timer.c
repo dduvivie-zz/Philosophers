@@ -19,7 +19,7 @@ void	usleep_ms(unsigned int time)
 	struct timeval	end;
 	double			start_microsecond;
 	double			end_microsecond;
-	double			total_microseconds;	
+	double			total_microseconds;
 
 	time = (double)(time * 1000);
 	gettimeofday(&start, NULL);
@@ -51,13 +51,13 @@ long int	get_time(struct timeval start)
 /* Check if the philosopher still have time to be alive */
 void	time_check(struct timeval start, t_philo *philo)
 {
-	struct timeval	end;
+	struct timeval	now;
 	long int		milliseconds;
-	
-	gettimeofday(&end, NULL);
-	milliseconds = (((end.tv_sec - start.tv_sec) * 1000) \
-					+ (end.tv_usec - start.tv_usec) / 1000);
-	printf("----PHILO %d's time is %ld\n", philo->id, milliseconds);
+
+	gettimeofday(&now, NULL);
+	milliseconds = (((now.tv_sec - philo->philo_life.tv_sec) * 1000) \
+					+ (now.tv_usec - philo->philo_life.tv_usec) / 1000);
+	//printf("----PHILO %d's time is %ld\n", philo->id, milliseconds);
 	if (milliseconds >= philo->time_to_die)
 	{
 		pthread_mutex_lock(&(philo->end_flag->mutex));

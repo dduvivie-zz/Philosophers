@@ -34,14 +34,15 @@ typedef struct s_fork{
 }				t_fork;
 
 typedef struct s_philo{
-	int			id;
-	int			time_to_die;
-	int			time_to_eat;
-	int			time_to_sleep;
-	int			num_of_times_eat;
-	t_fork		*left_fork;
-	t_fork		*right_fork;
-	t_endflag	*end_flag;
+	int				id;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				num_of_times_eat;
+	t_fork			*left_fork;
+	t_fork			*right_fork;
+	t_endflag		*end_flag;
+	struct timeval	philo_life;
 }				t_philo;
 
 typedef struct s_args{
@@ -75,8 +76,10 @@ t_philo		*init_philos(t_args *args, t_fork *forks, t_endflag *end_flag);
 /* simulation */
 void		*start(void *data);
 void		*start2(void *data); //
+void		philo_alone(struct timeval start, t_philo *philo); //
 void		philo_sleep(struct timeval start, t_philo *philo);
 void		philo_think(struct timeval start, t_philo *philo);
+void		philo_eat(struct timeval start, t_philo *philo);
 void		even_philo_eat(struct timeval start, t_philo *philo);
 void		odd_philo_eat(struct timeval start, t_philo *philo);
 void		philo_die(struct timeval start, t_philo *philo);
@@ -93,4 +96,8 @@ int			error_exit(t_program *prg, int num);
 void		destroy_fork_mutex(t_fork *forks, int num);
 void		destroy_endflag_mutex(t_endflag *end_flag);
 void		free_all_memory(t_program *prg);
+
+
+void		*eat_till_die(void *data);
+void		*eat_n_times(void *data);
 #endif

@@ -21,6 +21,7 @@ SRC			= main.c \
 			init_structs2.c \
 			start.c \
 			philo_actions.c \
+			philo_actions2.c \
 			libft_functions.c \
 			timer.c	\
 			exit.c

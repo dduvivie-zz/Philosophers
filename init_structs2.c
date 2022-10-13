@@ -28,6 +28,7 @@ t_fork	*init_forks(t_args *args)
 	{
 		if (pthread_mutex_init(&(forks[i].mutex), NULL) != 0)
 			error_flag = 1;
+		forks[i].used = 0;
 		i++;
 	}
 	if (error_flag)

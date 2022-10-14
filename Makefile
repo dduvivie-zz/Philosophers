@@ -25,6 +25,7 @@ SRC			= main.c \
 			philo_actions.c \
 			libft_functions.c \
 			timer.c	\
+			check_end.c \
 			exit.c
 
 

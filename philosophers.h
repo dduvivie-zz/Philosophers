@@ -90,6 +90,7 @@ void		print_message(long int time, t_philo *philo, char *msg);
 void		check_end(struct timeval *start, t_philo *philo, int *check_flag);
 int			check_end_flag(t_endflag *end_flag);
 void		check_philo_life(struct timeval *start, t_philo *philo);
+int			get_philo_time_limit(t_philo *philo);
 
 /* timer */
 long int	get_time(struct timeval *start);

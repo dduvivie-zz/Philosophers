@@ -12,114 +12,95 @@
 
 #include "philosophers.h"
 
-int	check_end(t_philo *philo)
+/* The philosopher has only one fork, so he will die before eating */
+void	philo_alone(struct timeval *start, t_philo *philo)
 {
-	int i;
-	int philo_num;
-
-	i = 0;
-	philo_num = philo->end_flag->philo_num;
-	if (philo->num_of_times_eat != -1)
-	{
-		pthread_mutex_lock(&(philo->end_flag->mutex));
-		while (i < philo_num)
-		{
-			if (philo->end_flag->eat_counter[i] > 0)
-				return (0);
-			i++;
-		}
-		pthread_mutex_unlock(&(philo->end_flag->mutex));
-	}
-	return (1);
+	printf("%10ld %u has taken a fork\n", get_time(start), philo->id);
+	usleep_ms(philo->time_to_die);
+	printf("%10ld %u died\n", get_time(start), philo->id);
 }
 
-int	check_end_flag(t_endflag *end_flag)
+void	eat_till_die(struct timeval *start, t_philo *philo)
 {
-	int	end;
+	int	flag;
+	int	check_flag;
 
-	end = 0;
-	pthread_mutex_lock(&(end_flag->mutex));
-	// print message
-	if (end_flag->finish)
-		end = 1;
-	pthread_mutex_unlock(&(end_flag->mutex));
-	return (end);
+	flag = 0;
+	check_flag = 0;
+	while (check_end_flag(philo->end_flag) == 0)
+	{
+		check_end(start, philo, &check_flag);
+		if (get_first_fork(start, philo))
+		{
+			while (!get_second_fork(start, philo) \
+					&& check_end_flag(philo->end_flag) == 0)
+				check_end(start, philo, &check_flag);
+			philo_eat(start, philo, &check_flag);
+			philo_sleep(start, philo, &check_flag);
+			flag = 0;
+		}
+		else
+			philo_think(start, philo, &flag, &check_flag);
+	}
+	return ;
+}
+
+void	eat_n_times(struct timeval *start, t_philo *philo)
+{
+	int	flag;
+	int	check_flag;
+
+	flag = 0;
+	check_flag = 1;
+	while (check_end_flag(philo->end_flag) == 0)
+	{
+		check_end(start, philo, &check_flag);
+		if (get_first_fork(start, philo))
+		{
+			while (!get_second_fork(start, philo) \
+					&& check_end_flag(philo->end_flag) == 0)
+				check_end(start, philo, &check_flag);
+			philo_eat(start, philo, &check_flag);
+			philo_sleep(start, philo, &check_flag);
+			flag = 0;
+		}
+		else
+			philo_think(start, philo, &flag, &check_flag);
+	}
+	return ;
+}
+
+void	test_timer(struct timeval *start_time, t_philo *philo)
+{
+	int	i = 60;
+
+	printf("%10ld %u\n", get_time(start_time), philo->id);
+	usleep_ms(i);
+	printf("%10ld %u\n", get_time(start_time), philo->id);
+	usleep_ms(i);
+	printf("%10ld %u\n", get_time(start_time), philo->id);
+	usleep_ms(i);
+	printf("%10ld %u\n", get_time(start_time), philo->id);
+	usleep_ms(i);
+	printf("%10ld %u\n", get_time(start_time), philo->id);
 }
 
 void	*start(void *data)
 {
 	t_philo			*philo;
-	struct timeval	start_time;
+	struct timeval	start;
 
 	philo = (t_philo *)data;
-	gettimeofday(&start_time, NULL);
+	gettimeofday(&start, NULL);
 	gettimeofday(&(philo->philo_life), NULL);
 	if (philo->end_flag->philo_num == 1)
 	{
-		philo_alone(start_time, philo);
+		philo_alone(&start, philo);
 		return (NULL);
 	}
-	while (check_end_flag(philo->end_flag) == 0)
-	{
-		time_check(start_time, philo);
-		if (check_end_flag(philo->end_flag) == 0)
-			philo_think(start_time, philo);
-		if (check_end_flag(philo->end_flag) == 0)
-			time_check(start_time, philo);
-		if (check_end_flag(philo->end_flag) == 0)
-		{
-			//philo_eat(start_time, philo);
-			if (philo->id % 2 == 0)
-				even_philo_eat(start_time, philo);
-			else
-				odd_philo_eat(start_time, philo);
-			gettimeofday(&(philo->philo_life), NULL);
-		}
-		if (check_end_flag(philo->end_flag) == 0)
-			philo_sleep(start_time, philo);
-	}
-	return (NULL);
-}
-
-void	*start2(void *data)
-{
-	t_philo			*philo;
-	struct timeval	start_time;
-	//struct timeval	life_time;
-
-	philo = (t_philo *)data;
-	gettimeofday(&start_time, NULL);
-	//gettimeofday(&life_time, NULL);
-	//printf("My ID is %d.\ntime_to_eat = %d\ntime_to_die = %d\n", philo->id, philo->time_to_eat, philo->time_to_die);
-	usleep_ms(60);
-	printf("%ld\n", get_time(start_time));
-	usleep_ms(60);
-	printf("%ld\n", get_time(start_time));
-	usleep_ms(60);
-	printf("%ld\n", get_time(start_time));
-	usleep_ms(60);
-	printf("%ld\n", get_time(start_time));
-	//philo_think(start_time, philo);
-	//philo_eat(start_time, philo);
-	//philo_sleep(start_time, philo);
-	//time_check(life_time, philo);
-	return (NULL);
-}
-
-void	*eat_till_die(void *data)
-{
-	t_philo			*philo;
-
-	philo = (t_philo *)data;
-	printf("test thread\n");
-	return (NULL);
-}
-
-void	*eat_n_times(void *data)
-{
-	t_philo			*philo;
-
-	philo = (t_philo *)data;
-	printf("test2 thread\n");
+	if (philo->num_of_times_eat == -1)
+		eat_till_die(&start, philo);
+	else
+		eat_n_times(&start, philo);
 	return (NULL);
 }

@@ -16,25 +16,13 @@ int	thread_created(pthread_t *threads, t_philo *philos, t_program *prg)
 {
 	int	i;
 	int	num;
-	int	flag;
 
 	i = 0;
 	num = prg->args.num_of_philo;
-	flag = 0;
-	if (prg->args.num_of_times_eat == -1)
-		flag = 1;
 	while (i < num)
 	{
-		if (flag)
-		{
-			if (pthread_create(&(threads[i]), NULL, start, &(philos[i])))
-				return (0);
-		}
-		else
-		{
-			if (pthread_create(&(threads[i]), NULL, start, &(philos[i])))
-				return (0);
-		}
+		if (pthread_create(&(threads[i]), NULL, start, &(philos[i])))
+			return (0);
 		i++;
 	}
 	return (1);

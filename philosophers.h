@@ -29,7 +29,7 @@ typedef struct s_endflag{
 }				t_endflag;
 
 typedef struct s_fork{
-	int				id;
+	int				used;
 	pthread_mutex_t	mutex;
 }				t_fork;
 
@@ -75,21 +75,30 @@ t_philo		*init_philos(t_args *args, t_fork *forks, t_endflag *end_flag);
 
 /* simulation */
 void		*start(void *data);
-void		*start2(void *data); //
-void		philo_alone(struct timeval start, t_philo *philo); //
-void		philo_sleep(struct timeval start, t_philo *philo);
-void		philo_think(struct timeval start, t_philo *philo);
-void		philo_eat(struct timeval start, t_philo *philo);
-void		even_philo_eat(struct timeval start, t_philo *philo);
-void		odd_philo_eat(struct timeval start, t_philo *philo);
-void		philo_die(struct timeval start, t_philo *philo);
+void		eat_till_die(struct timeval *start, t_philo *philo);
+void		eat_n_times(struct timeval *start, t_philo *philo);
+void		philo_alone(struct timeval *start, t_philo *philo);
+void		philo_sleep(struct timeval *start, t_philo *philo, int *check_flag);
+void		philo_think(struct timeval *start, t_philo *philo, int *f, int *c);
 int			check_end_flag(t_endflag *end_flag);
+void		print_message(long int time, t_philo *philo, char *msg);
+void		check_end(struct timeval *start, t_philo *philo, int *check_flag);
 
+
+
+/* eat action */
+int			get_first_fork(struct timeval *start, t_philo *philo);
+int			get_second_fork(struct timeval *start, t_philo *philo);
+int			get_left_fork(struct timeval *start, t_philo *philo);
+int			get_right_fork(struct timeval *start, t_philo *philo);
+void		put_down_forks(t_philo *philo);
+void		philo_eat(struct timeval *start, t_philo *philo, int *check_flag);
+void		count_eat(t_philo *philo);
 
 /* timer */
-long int	get_time(struct timeval start);
+long int	get_time(struct timeval *start);
 void		usleep_ms(unsigned int time);
-void		time_check(struct timeval start, t_philo *philo);
+void		time_check(struct timeval *start, t_philo *philo);
 
 /* before exit the program */
 int			error_exit(t_program *prg, int num);
@@ -97,7 +106,4 @@ void		destroy_fork_mutex(t_fork *forks, int num);
 void		destroy_endflag_mutex(t_endflag *end_flag);
 void		free_all_memory(t_program *prg);
 
-
-void		*eat_till_die(void *data);
-void		*eat_n_times(void *data);
 #endif

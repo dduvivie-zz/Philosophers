@@ -15,7 +15,7 @@
 void	philo_sleep(struct timeval *start, t_philo *philo, int *check_flag)
 {
 	check_end(start, philo, check_flag);
-	if (check_end_flag(philo->end_flag) == 0)
+	if (!check_end_flag(philo->end_flag))
 	{
 		if (philo->time_to_sleep > philo->time_to_die)
 		{
@@ -25,19 +25,17 @@ void	philo_sleep(struct timeval *start, t_philo *philo, int *check_flag)
 		else
 		{
 			check_end(start, philo, check_flag);
-			if (check_end_flag(philo->end_flag) == 0)
+			if (!check_end_flag(philo->end_flag))
 				print_message(get_time(start), philo, "is sleeping");
 			usleep_ms(philo->time_to_sleep);
 		}
 	}
-	else
-		return ;
 }
 
 void	philo_think(struct timeval *start, t_philo *philo, int *f, int *c)
 {
 	check_end(start, philo, c);
-	if ((check_end_flag(philo->end_flag) == 0) && *f == 0)
+	if (!check_end_flag(philo->end_flag) && *f == 0)
 	{
 		printf("%10ld %u is thinking\n", get_time(start), philo->id);
 		*f = 1;
@@ -47,7 +45,7 @@ void	philo_think(struct timeval *start, t_philo *philo, int *f, int *c)
 void	philo_eat(struct timeval *start, t_philo *philo, int *check_flag)
 {
 	check_end(start, philo, check_flag);
-	if (check_end_flag(philo->end_flag) == 0)
+	if (!check_end_flag(philo->end_flag))
 	{
 		gettimeofday(&(philo->philo_life), NULL);
 		if (philo->time_to_eat > philo->time_to_die)
@@ -65,6 +63,4 @@ void	philo_eat(struct timeval *start, t_philo *philo, int *check_flag)
 			put_down_forks(philo);
 		}
 	}
-	else
-		return ;
 }

@@ -27,13 +27,13 @@ void	eat_till_die(struct timeval *start, t_philo *philo)
 
 	flag = 0;
 	check_flag = 0;
-	while (check_end_flag(philo->end_flag) == 0)
+	while (!check_end_flag(philo->end_flag))
 	{
 		check_end(start, philo, &check_flag);
 		if (get_first_fork(start, philo))
 		{
 			while (!get_second_fork(start, philo) \
-					&& check_end_flag(philo->end_flag) == 0)
+					&& !check_end_flag(philo->end_flag))
 				check_end(start, philo, &check_flag);
 			philo_eat(start, philo, &check_flag);
 			philo_sleep(start, philo, &check_flag);
@@ -52,13 +52,13 @@ void	eat_n_times(struct timeval *start, t_philo *philo)
 
 	flag = 0;
 	check_flag = 1;
-	while (check_end_flag(philo->end_flag) == 0)
+	while (!check_end_flag(philo->end_flag))
 	{
 		check_end(start, philo, &check_flag);
 		if (get_first_fork(start, philo))
 		{
 			while (!get_second_fork(start, philo) \
-					&& check_end_flag(philo->end_flag) == 0)
+					&& !check_end_flag(philo->end_flag))
 				check_end(start, philo, &check_flag);
 			philo_eat(start, philo, &check_flag);
 			philo_sleep(start, philo, &check_flag);

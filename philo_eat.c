@@ -22,7 +22,7 @@ void	get_forks(struct timeval *start, t_philo *philo)
 }
 
 /* Unlock the mutex of two forks */
-void	put_down_forks(struct timeval *start, t_philo *philo)
+void	put_down_forks(t_philo *philo)
 {
 	pthread_mutex_unlock(&(philo->left_fork->mutex));
 	pthread_mutex_unlock(&(philo->right_fork->mutex));

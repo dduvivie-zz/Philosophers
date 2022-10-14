@@ -21,6 +21,19 @@ void	print_message(long int time, t_philo *philo, char *msg)
 	pthread_mutex_unlock(&(philo->end_flag->mutex));
 }
 
+int	get_philo_time_limit(t_philo *philo)
+{
+	struct timeval	now;
+	long int		milliseconds;
+	int				time_limit;
+
+	gettimeofday(&now, NULL);
+	milliseconds = (((now.tv_sec - philo->philo_life.tv_sec) * 1000) \
+					+ (now.tv_usec - philo->philo_life.tv_usec) / 1000);
+	time_limit = philo->time_to_die - (int)milliseconds;
+	return (time_limit);
+}
+
 /* Check if the philosopher is dead. If so, print the died message */
 void	check_philo_life(struct timeval *start, t_philo *philo)
 {

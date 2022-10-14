@@ -15,12 +15,15 @@
 /* Philosopher sleep */
 void	philo_sleep(struct timeval *start, t_philo *philo, int *check_flag)
 {
+	int	philo_time_limit;
+
 	check_end(start, philo, check_flag);
 	if (!check_end_flag(philo->end_flag))
 	{
-		if (philo->time_to_sleep > philo->time_to_die)
+		philo_time_limit = get_philo_time_limit(philo);
+		if (philo->time_to_sleep > philo_time_limit)
 		{
-			usleep_ms(philo->time_to_sleep);
+			usleep_ms(philo_time_limit);
 			check_end(start, philo, check_flag);
 		}
 		else

@@ -53,6 +53,6 @@ int	main(int argc, char *argv[])
 		}
 	}
 	free_all_memory(&prg);
-	system("leaks philosophers > .leaks_log.txt");
+	system("leaks philo > .leaks_log.txt");
 	return (0);
 }

@@ -12,6 +12,7 @@
 
 #include "philosophers.h"
 
+/* Philosopher sleep */
 void	philo_sleep(struct timeval *start, t_philo *philo, int *check_flag)
 {
 	check_end(start, philo, check_flag);
@@ -32,6 +33,7 @@ void	philo_sleep(struct timeval *start, t_philo *philo, int *check_flag)
 	}
 }
 
+/* Philosopher think */
 void	philo_think(struct timeval *start, t_philo *philo, int *check_flag)
 {
 	check_end(start, philo, check_flag);
@@ -39,24 +41,20 @@ void	philo_think(struct timeval *start, t_philo *philo, int *check_flag)
 		printf("%10ld %u is thinking\n", get_time(start), philo->id);
 }
 
+/* Philosopher eat */
 void	philo_eat(struct timeval *start, t_philo *philo, int *check_flag)
 {
 	check_end(start, philo, check_flag);
 	if (!check_end_flag(philo->end_flag))
-	{
-		pthread_mutex_lock(&(philo->left_fork->mutex));
-		print_message(get_time(start), philo, "has taken a fork");
-		pthread_mutex_lock(&(philo->right_fork->mutex));
-		print_message(get_time(start), philo, "has taken a fork");
-	}
-	else 
+		get_forks(start, philo);
+	else
 		return ;
 	if (philo->time_to_eat > philo->time_to_die)
 	{
 		usleep_ms(philo->time_to_die);
 		check_end(start, philo, check_flag);
 		pthread_mutex_unlock(&(philo->right_fork->mutex));
-		pthread_mutex_unlock(&(philo->left_fork->mutex));				
+		pthread_mutex_unlock(&(philo->left_fork->mutex));
 		return ;
 	}
 	check_end(start, philo, check_flag);
@@ -65,6 +63,5 @@ void	philo_eat(struct timeval *start, t_philo *philo, int *check_flag)
 		count_eat(philo);
 	gettimeofday(&(philo->philo_life), NULL);
 	usleep_ms(philo->time_to_eat);
-	pthread_mutex_unlock(&(philo->left_fork->mutex));
-	pthread_mutex_unlock(&(philo->right_fork->mutex));
+	put_down_forks(start, philo);
 }

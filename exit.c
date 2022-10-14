@@ -56,6 +56,9 @@ int	error_exit(t_program *prg, int num)
 	return (0);
 }
 
+/* 
+When the simulation finish successfully, free all allocated memory and destroy mutex
+*/
 void	free_all_memory(t_program *prg)
 {
 	int	num;

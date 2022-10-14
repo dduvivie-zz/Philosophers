@@ -79,7 +79,7 @@ void		eat_till_die(struct timeval *start, t_philo *philo);
 void		eat_n_times(struct timeval *start, t_philo *philo);
 void		philo_alone(struct timeval *start, t_philo *philo);
 void		philo_sleep(struct timeval *start, t_philo *philo, int *check_flag);
-void		philo_think(struct timeval *start, t_philo *philo, int *f, int *c);
+void		philo_think(struct timeval *start, t_philo *philo, int *check_flag);
 int			check_end_flag(t_endflag *end_flag);
 void		print_message(long int time, t_philo *philo, char *msg);
 void		check_end(struct timeval *start, t_philo *philo, int *check_flag);

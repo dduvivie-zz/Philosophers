@@ -85,10 +85,3 @@ void	put_down_forks(t_philo *philo)
 		pthread_mutex_unlock(&(philo->right_fork->mutex));
 	}
 }
-
-/*		pthread_mutex_lock(&(philo->right_fork->mutex));
-		philo->right_fork->used = 0;
-		pthread_mutex_unlock(&(philo->right_fork->mutex));
-		pthread_mutex_lock(&(philo->left_fork->mutex));
-		philo->left_fork->used = 0;
-		pthread_mutex_unlock(&(philo->left_fork->mutex));*/

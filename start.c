@@ -22,67 +22,36 @@ void	philo_alone(struct timeval *start, t_philo *philo)
 
 void	eat_till_die(struct timeval *start, t_philo *philo)
 {
-	int	flag;
 	int	check_flag;
 
-	flag = 0;
 	check_flag = 0;
 	while (!check_end_flag(philo->end_flag))
 	{
+		philo_think(start, philo, &check_flag);
 		check_end(start, philo, &check_flag);
-		if (get_first_fork(start, philo))
-		{
-			while (!get_second_fork(start, philo) \
-					&& !check_end_flag(philo->end_flag))
-				check_end(start, philo, &check_flag);
-			philo_eat(start, philo, &check_flag);
-			philo_sleep(start, philo, &check_flag);
-			flag = 0;
-		}
-		else
-			philo_think(start, philo, &flag, &check_flag);
+		philo_eat(start, philo, &check_flag);
+		check_end(start, philo, &check_flag);
+		philo_sleep(start, philo, &check_flag);
+		check_end(start, philo, &check_flag);
 	}
 	return ;
 }
 
 void	eat_n_times(struct timeval *start, t_philo *philo)
 {
-	int	flag;
 	int	check_flag;
 
-	flag = 0;
 	check_flag = 1;
 	while (!check_end_flag(philo->end_flag))
 	{
+		philo_think(start, philo, &check_flag);
 		check_end(start, philo, &check_flag);
-		if (get_first_fork(start, philo))
-		{
-			while (!get_second_fork(start, philo) \
-					&& !check_end_flag(philo->end_flag))
-				check_end(start, philo, &check_flag);
-			philo_eat(start, philo, &check_flag);
-			philo_sleep(start, philo, &check_flag);
-			flag = 0;
-		}
-		else
-			philo_think(start, philo, &flag, &check_flag);
+		philo_eat(start, philo, &check_flag);
+		check_end(start, philo, &check_flag);
+		philo_sleep(start, philo, &check_flag);
+		check_end(start, philo, &check_flag);
 	}
 	return ;
-}
-
-void	test_timer(struct timeval *start_time, t_philo *philo)
-{
-	int	i = 60;
-
-	printf("%10ld %u\n", get_time(start_time), philo->id);
-	usleep_ms(i);
-	printf("%10ld %u\n", get_time(start_time), philo->id);
-	usleep_ms(i);
-	printf("%10ld %u\n", get_time(start_time), philo->id);
-	usleep_ms(i);
-	printf("%10ld %u\n", get_time(start_time), philo->id);
-	usleep_ms(i);
-	printf("%10ld %u\n", get_time(start_time), philo->id);
 }
 
 void	*start(void *data)

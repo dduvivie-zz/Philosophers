@@ -24,6 +24,7 @@ int	thread_created(pthread_t *threads, t_philo *philos, t_program *prg)
 		if (pthread_create(&(threads[i]), NULL, start, &(philos[i])))
 			return (0);
 		i++;
+		usleep(500);
 	}
 	return (1);
 }

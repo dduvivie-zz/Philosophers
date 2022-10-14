@@ -19,8 +19,10 @@ int	thread_created(pthread_t *threads, t_philo *philos, t_program *prg)
 
 	i = 0;
 	num = prg->args.num_of_philo;
+	gettimeofday(&(prg->prg_start), NULL);
 	while (i < num)
 	{
+		philos[i].prg_start = prg->prg_start;
 		if (pthread_create(&(threads[i]), NULL, start, &(philos[i])))
 			return (0);
 		i++;

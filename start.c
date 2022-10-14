@@ -57,19 +57,17 @@ void	eat_n_times(struct timeval *start, t_philo *philo)
 void	*start(void *data)
 {
 	t_philo			*philo;
-	struct timeval	start;
 
 	philo = (t_philo *)data;
-	gettimeofday(&start, NULL);
 	gettimeofday(&(philo->philo_life), NULL);
 	if (philo->end_flag->philo_num == 1)
 	{
-		philo_alone(&start, philo);
+		philo_alone(&(philo->prg_start), philo);
 		return (NULL);
 	}
 	if (philo->num_of_times_eat == -1)
-		eat_till_die(&start, philo);
+		eat_till_die(&(philo->prg_start), philo);
 	else
-		eat_n_times(&start, philo);
+		eat_n_times(&(philo->prg_start), philo);
 	return (NULL);
 }

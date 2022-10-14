@@ -43,6 +43,7 @@ typedef struct s_philo{
 	t_fork			*right_fork;
 	t_endflag		*end_flag;
 	struct timeval	philo_life;
+	struct timeval	prg_start;
 }				t_philo;
 
 typedef struct s_args{
@@ -55,11 +56,12 @@ typedef struct s_args{
 }				t_args;
 
 typedef struct s_program{
-	t_args		args;
-	pthread_t	*threads;
-	t_fork		*forks;
-	t_endflag	end_flag;
-	t_philo		*philos;
+	t_args			args;
+	pthread_t		*threads;
+	t_fork			*forks;
+	t_endflag		end_flag;
+	t_philo			*philos;
+	struct timeval	prg_start;
 }				t_program;
 
 /* check arguments */

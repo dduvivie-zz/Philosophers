@@ -68,7 +68,7 @@ int	args_are_correct(int argc, char *argv[])
 	return (1);
 }
 
-/* Get all arguments (string) to int */
+/* Get all arguments (str) to int */
 int	get_args_in_int(int argc, char *argv[], t_args *args)
 {
 	if (!args_are_correct(argc, argv))

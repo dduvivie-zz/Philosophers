@@ -63,5 +63,5 @@ void	philo_eat(struct timeval *start, t_philo *philo, int *check_flag)
 		count_eat(philo);
 	gettimeofday(&(philo->philo_life), NULL);
 	usleep_ms(philo->time_to_eat);
-	put_down_forks(start, philo);
+	put_down_forks(philo);
 }

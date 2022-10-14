@@ -42,6 +42,7 @@ t_fork	*init_forks(t_args *args)
 	return (forks);
 }
 
+/* Set the right fork and left fork for each philosopher */
 void	set_forks(t_philo *philo, int i, int last, t_fork *forks)
 {
 	if (last == 0)
@@ -60,6 +61,7 @@ void	set_forks(t_philo *philo, int i, int last, t_fork *forks)
 		philo->right_fork = &(forks[i]);
 }
 
+/* Init the list of philosophers */
 t_philo	*init_philos(t_args *args, t_fork *forks, t_endflag *end_flag)
 {
 	int		i;

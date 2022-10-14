@@ -41,4 +41,3 @@ long int	get_time(struct timeval *start)
 					+ (te.tv_usec - start->tv_usec) / 1000);
 	return (milliseconds);
 }
-

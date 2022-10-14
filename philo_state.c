@@ -21,18 +21,6 @@ void	print_message(long int time, t_philo *philo, char *msg)
 	pthread_mutex_unlock(&(philo->end_flag->mutex));
 }
 
-/* Decrement the number of times philosopher must eat */
-void	count_eat(t_philo *philo)
-{
-	int	i;
-
-	i = philo->id - 1;
-	pthread_mutex_lock(&(philo->end_flag->mutex));
-	if (philo->end_flag->eat_counter[i] > 0)
-		philo->end_flag->eat_counter[i] -= 1;
-	pthread_mutex_unlock(&(philo->end_flag->mutex));
-}
-
 /* Check if the philosopher is dead. If so, print the died message */
 void	check_philo_life(struct timeval *start, t_philo *philo)
 {

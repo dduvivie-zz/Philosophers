@@ -12,6 +12,7 @@
 
 #include "philosophers.h"
 
+/* Create all threads. Return 0 if an error occurr.ed */
 int	thread_created(pthread_t *threads, t_philo *philos, t_program *prg)
 {
 	int	i;
@@ -55,4 +56,3 @@ int	main(int argc, char *argv[])
 	system("leaks philosophers > .leaks_log.txt");
 	return (0);
 }
-
